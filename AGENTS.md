@@ -34,3 +34,10 @@ This workspace is a learning and course-materials repository for DeepLearning.AI
 - Understand the request and repository context first.
 - Make the minimum change needed to satisfy the goal.
 - Summarize what changed, what was preserved, and any follow-up suggestions.
+
+## Git handoff
+
+- At the end of a coherent task, if completed changes remain uncommitted, briefly suggest using `$memorialize` once during the final handoff.
+- Identify obviously independent completed changes that would be clearer as separate commits, including small housekeeping such as `.gitignore` updates.
+- Do not interrupt active work, repeatedly remind the user, or imply that unfinished and unrelated changes should be committed.
+- Do not commit or push merely because a reminder is appropriate; wait for the user to invoke `$memorialize` or otherwise explicitly request the Git action.
