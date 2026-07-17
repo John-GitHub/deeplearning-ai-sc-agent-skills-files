@@ -120,3 +120,5 @@ If authentication, protection, non-fast-forward history, or policy blocks the pu
 ## 9. Report
 
 State each commit subject and SHA, its included change, validation results, pushed remote branch or failure, and any unrelated or unfinished changes left untouched.
+
+When the change set was split into multiple commits, explain the reasoning behind the partition — what made the concerns independent and why each boundary was drawn where it was.
