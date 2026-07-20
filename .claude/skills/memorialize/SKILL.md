@@ -1,7 +1,7 @@
 ---
 name: memorialize
 description: Review intended Git changes, partition independent concerns, validate them, create meaningful atomic commits, and safely push them. Use when the user invokes /memorialize or $memorialize, or asks to memorialize, commit and push, publish completed work, or preserve finished changes in Git history.
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git remote -v), Bash(git branch --show-current), Bash(git rev-parse:*), Bash(git show:*), Bash(python .claude/skills/memorialize/scripts/inspect.py:*), Bash(python .claude/skills/memorialize/scripts/safety_gate.py:*)
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git remote -v), Bash(git branch --show-current), Bash(git rev-parse:*), Bash(git show:*), Bash(python .claude/skills/memorialize/scripts/inspect.py:*), Bash(python .claude/skills/memorialize/scripts/safety_gate.py:*), Bash(python .claude/skills/memorialize/scripts/test_gate.py:*)
 ---
 
 # Memorialize
@@ -27,7 +27,8 @@ authorization.
 ## Procedure
 
 1. **Inspect.** Run `python .claude/skills/memorialize/scripts/inspect.py`. It prints
-   branch/upstream/remote, tree state, and recent commit subjects. On any `BLOCKED`
+   the repo root, branch/upstream/remote, tree state, and recent commit subjects.
+   Heed any cwd NOTE: later `git add`/`commit` steps must run from the printed ROOT. On any `BLOCKED`
    line (merge/rebase in progress, detached HEAD, conflicts) or pre-existing staged
    work you don't own, stop and read `references/hazards.md` first. Stop too when
    there is nothing commit-worthy.
@@ -42,7 +43,10 @@ authorization.
 
 3. **Validate.** Run documented checks proportional to the change (tests, lint,
    build). Never claim a check passed that didn't run; report skipped or unavailable
-   checks. A failure stops the commit unless the user explicitly accepts it.
+   checks. A failure stops the commit unless the user explicitly accepts it. When
+   this skill's own scripts are among the changes, run
+   `python .claude/skills/memorialize/scripts/test_gate.py` and require
+   `SELF-TEST PASS`.
 
 4. **Stage.** `git add -- <explicit paths>` only — never `git add .` or `-A`. Review
    `git diff --cached --stat` for coherence.

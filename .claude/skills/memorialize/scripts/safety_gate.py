@@ -10,6 +10,7 @@ Never prints matched secret values. Exit 0 on pass, 1 on findings.
 The model retains the judgment call on anything reported here and on
 context-dependent hazards (private data, ownership) no regex can see.
 """
+import os
 import re
 import subprocess
 import sys
@@ -51,6 +52,15 @@ def git(*args):
 
 
 def main():
+    # self-locate the repo root: check-ignore and cat-file take root-relative
+    # paths from git's own output, so the cwd must be the root
+    code, top = git("rev-parse", "--show-toplevel")
+    if code != 0:
+        print("GATE FAIL: 1 finding(s)")
+        print("- RANGE not a git repository")
+        return 1
+    os.chdir(top.strip())
+
     outgoing = "--outgoing" in sys.argv
     if outgoing:
         code, _ = git("rev-parse", "@{upstream}")

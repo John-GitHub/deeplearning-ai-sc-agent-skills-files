@@ -20,6 +20,13 @@ def main():
     if code != 0:
         print("BLOCKED: not a git repository")
         return 1
+    # self-locate: later git add/commit steps are cwd-sensitive, so surface
+    # any mismatch instead of relying on the caller's discipline
+    cwd = os.path.normcase(os.path.realpath(os.getcwd()))
+    if cwd != os.path.normcase(os.path.realpath(top)):
+        print(f"NOTE cwd is not the repo root -- run subsequent git commands from: {top}")
+    os.chdir(top)
+    print(f"ROOT {top}")
 
     blockers = []
     gitdir = git("rev-parse", "--git-dir")[1]
