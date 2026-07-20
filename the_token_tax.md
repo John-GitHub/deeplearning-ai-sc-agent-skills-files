@@ -2,7 +2,8 @@
 
 > *"When the party ends, the tax man comes knocking. It's all about energy."*
 
-Notes derived from a working conversation with Claude Code (2026-07-17), companion to the
+Notes derived from working conversations with Claude Code (2026-07-17; Principle 9 and
+the parking lot added 2026-07-19), companion to the
 DeepLearning.AI short course **"Agent Skills with Anthropic"**. Organized not as a lecture
 but as a set of energy-minimization principles: what to do, and why the physics of token
 compute makes it the right thing to do.
@@ -117,7 +118,6 @@ in a bundled script (`scripts/validate.py`), with the `SKILL.md` body instructin
 model to **run it, not reason through it**. The model can execute a script it has never
 read: only the command and the script's *output* enter the context window; the source
 never does. Design script output accordingly — terse on success, specific on failure —
-because the output is the only part that gets billed.
 
 **Why.** This is the phase change from the energy ladder, and it pays twice. First,
 energy: logic of arbitrary complexity drops out of the token regime entirely — a
@@ -185,6 +185,48 @@ precisely "state communicated through assets on disk" — one session authors `S
 a later session, a sub-agent, or a different CLI entirely discovers and reads it. Skills
 are the disciplined endpoint of file-based state sharing.
 
+## Principle 9 — Crystallization: the gradient toward colder engines
+
+**The advice.** Author skills with the most capable model available, then *freeze* the
+result: deterministic logic into scripts, invariants into a bundled test suite,
+judgment reduced to its irreducible remnant in the body. Once frozen, execute the
+skill with the cheapest engine that clears the remaining judgment bar. Pay for genius
+once, at design time; pay commodity rates at runtime, forever.
+
+**Why.** The token tax has two axes — *fewer* tokens and *cheaper* tokens — and this
+principle serves the second. Temperature, in this system, is model capability. Running
+hot anneals the problem: the expensive model finds the minimum-energy structure.
+Crystallization freezes that structure into artifacts on disk, and the latent heat
+released is the one-time engineering cost of writing the scripts and their tests. The
+crystal then performs at any temperature above a floor — set not by the average task
+but by the **hardest surviving judgment call** (dispatch, interpreting user context,
+the stop-veto on a safety finding). And crystals travel: a skill folder is crystallized
+competence in the open-standard lattice, wieldable by any compatible engine — the
+premium model's reasoning, amortized across every cheap engine that ever picks it up.
+
+**The corollary, learned the hard way.** The phase change is incomplete until the
+script is *self-testing*. Prose cannot have a parsing bug; a script can, and it fails
+silently and precisely rather than loudly and fuzzily. Moving work down the ladder
+converts a recurring token tax into a one-time engineering **mortgage — and the
+mortgage payments are called tests.** Ship the script *and* its test, or you have only
+moved the fuzziness somewhere harder to see.
+
+---
+
+## Parking lot: the thermometer we don't have
+
+Deliberately deferred — one breakthrough at a time. The bundled tests protect the
+**crystal**, not the **engine wielding it**. A test suite proves the gate still catches
+the planted key; it proves nothing about whether a colder model *runs* the gate, heeds
+a BLOCKED line, or exercises the veto on a genuine finding. The judgment remnant is
+precisely the part with no test suite — so the claim "no degradation in capability"
+is, today, verified only at the temperature it was authored at.
+
+The missing artifact is a **judgment eval**: synthetic scenarios that probe the engine,
+not the lattice — *here is a gate finding; does the bot stop?* Until that exists, we
+can X-ray the crystal but cannot take the temperature of the fluid, and we do not know
+at what temperature the logic snaps. Parked, not forgotten.
+
 ---
 
 ## The ledger: Anthropic-specific vs. open standard
@@ -209,9 +251,12 @@ part of the skills standard.
 Frontmatter = zero-point energy (spend enough to guarantee excitation).
 Body = pay-per-trigger (only what every invocation needs).
 References = pay-per-branch.
-Scripts = out of the token regime entirely.
+Scripts = out of the token regime entirely — and self-testing, or the move isn't finished.
 Sub-agents = disposable frames that contain the burn.
 Files = the heap, handled with handoff discipline.
+Crystallization = anneal hot once, run cold forever; the floor is the hardest
+surviving judgment call.
 
 Put each piece of knowledge or logic at the lowest energy level at which it still
-works. That is the minimum energy solution, and it is the job — as ever.
+works, executed by the coldest engine that still clears the bar. That is the minimum
+energy solution, and it is the job — as ever.
